@@ -12,7 +12,7 @@ PARENT_PATH = COOKBOOK_PATH[0]
 COOKBOOK_NAME = COOKBOOK_PATH[1].chomp # remove trailing newline
 
 puts 'Running knife cookbook test...'
-knife_output = `bundle exec knife cookbook test #{ COOKBOOK_NAME } -o #{ PARENT_PATH } -c ~/chef/wit/chef-repo/.chef/knife.rb`
+knife_output = `bundle exec knife cookbook test #{ COOKBOOK_NAME } -o #{ PARENT_PATH }`
 unless $?.success?
   puts knife_output
   exit 1
