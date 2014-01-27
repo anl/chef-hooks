@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
+require 'English'
+
 # check for whitespace errors
 git_ws_check = `git diff-index --check --cached HEAD --`
 unless $CHILD_STATUS.success?
