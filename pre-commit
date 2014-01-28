@@ -29,7 +29,9 @@ STAGED_FILES = `git diff-index --name-only --diff-filter=ACM HEAD -- '*.rb'`
 STAGED_FILES.lines do |file|
   file.chomp! # remove carriage returns
   puts file
-  tailor_output = `bundle exec tailor --max-line-length 999 #{ file }`
+  tailor_output =
+    `bundle exec tailor --max-line-length 999 #{file} \
+      --indentation-spaces false`
   unless $CHILD_STATUS.success?
     puts tailor_output
     exit 1
@@ -40,7 +42,7 @@ puts 'Running RuboCop...'
 STAGED_FILES.lines do |file|
   file.chomp! # remove carriage returns
   puts file
-  rubocop_output = `bundle exec rubocop #{ file }`
+  rubocop_output = `bundle exec rubocop #{file}`
   unless $CHILD_STATUS.success?
     puts rubocop_output
     exit 1
