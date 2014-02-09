@@ -42,7 +42,7 @@ puts 'Running RuboCop...'
 STAGED_FILES.lines do |file|
   file.chomp! # remove carriage returns
   puts file
-  rubocop_output = `bundle exec rubocop #{file}`
+  rubocop_output = `bundle exec rubocop -D #{file}`
   unless $CHILD_STATUS.success?
     puts rubocop_output
     exit 1
