@@ -3,16 +3,17 @@
 
 require 'English'
 
-# check for whitespace errors
+puts 'Checking for whitespace errors...'
 git_ws_check = `git diff-index --check --cached HEAD --`
 unless $CHILD_STATUS.success?
   puts git_ws_check
   exit 1
 end
 
-COOKBOOK_PATH = File.split `git rev-parse --show-toplevel`
-PARENT_PATH = COOKBOOK_PATH[0]
-COOKBOOK_NAME = COOKBOOK_PATH[1].chomp # remove trailing newline
+COOKBOOK_PATH = `git rev-parse --show-toplevel`.chomp
+COOKBOOK_PATH_PARTS = File.split COOKBOOK_PATH
+PARENT_PATH = COOKBOOK_PATH_PARTS[0]
+COOKBOOK_NAME = COOKBOOK_PATH_PARTS[1]
 
 puts 'Running knife cookbook test...'
 knife_output =
@@ -22,10 +23,11 @@ unless $CHILD_STATUS.success?
   exit 1
 end
 
-puts 'Running tailor...'
-
 # Get the file names of (A)dded, (C)opied, (M)odified Ruby files
 STAGED_FILES = `git diff-index --name-only --diff-filter=ACM HEAD -- '*.rb'`
+
+puts 'Running tailor...'
+
 STAGED_FILES.lines do |file|
   file.chomp! # remove carriage returns
   puts file
@@ -51,8 +53,18 @@ end
 
 puts 'Running foodcritic...'
 fc_output =
-  `bundle exec foodcritic --epic-fail any #{File.join(COOKBOOK_PATH)}`
+  `bundle exec foodcritic --epic-fail any #{COOKBOOK_PATH}`
 unless $CHILD_STATUS.success?
   puts fc_output
   exit 1
+end
+
+chefspec_path = File.join([COOKBOOK_PATH, 'spec'])
+if File.directory?(chefspec_path)
+  puts 'Running chefspec...'
+  cs_output = `bundle exec rspec #{chefspec_path}`
+  unless $CHILD_STATUS.success?
+    puts cs_output
+    exit 1
+  end
 end
