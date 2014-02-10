@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'berkshelf'
 gem 'chef', '>= 11.0.0'
 gem 'foodcritic', '>= 3.0.0'
-gem 'rubocop'
+gem 'rubocop', '>=0.18'
 gem 'tailor'
 
 # Lock rainbow version until rubocop 0.18 is out:
