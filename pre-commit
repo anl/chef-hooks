@@ -26,20 +26,6 @@ end
 # Get the file names of (A)dded, (C)opied, (M)odified Ruby files
 STAGED_FILES = `git diff-index --name-only --diff-filter=ACM HEAD -- '*.rb'`
 
-puts 'Running tailor...'
-
-STAGED_FILES.lines do |file|
-  file.chomp! # remove carriage returns
-  puts file
-  tailor_output =
-    `bundle exec tailor --max-line-length 999 #{file} \
-      --indentation-spaces false`
-  unless $CHILD_STATUS.success?
-    puts tailor_output
-    exit 1
-  end
-end
-
 puts 'Running RuboCop...'
 STAGED_FILES.lines do |file|
   file.chomp! # remove carriage returns
