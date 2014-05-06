@@ -8,7 +8,7 @@ while getopts 'u:' flag; do
     esac
 done
 
-hook_url=${url:-'https://raw.github.com/anl/chef-hooks/master/pre-commit'}
+hook_url=${url:-'https://raw.githubusercontent.com/anl/chef-hooks/master/pre-commit'}
 
 # Get top level of repo, and set path to pre-commit hook:
 top_level=$(git rev-parse --show-toplevel)
