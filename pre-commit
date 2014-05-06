@@ -45,7 +45,13 @@ unless $CHILD_STATUS.success?
   exit 1
 end
 
-chefspec_path = File.join([COOKBOOK_PATH, 'spec'])
+# Assume we don't have specs in two locations:
+chefspec_path = nil
+%w(spec test/unit/spec).each do |spec_dir|
+  chefspec_path = File.join([COOKBOOK_PATH, spec_dir])
+  break if File.directory?(chefspec_path)
+end
+
 if File.directory?(chefspec_path)
   puts 'Running chefspec...'
   cs_output = `bundle exec rspec #{chefspec_path}`
