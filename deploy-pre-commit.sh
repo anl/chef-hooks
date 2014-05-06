@@ -3,7 +3,7 @@
 set -e
 
 while getopts 'u:' flag; do
-    case flag in
+    case $flag in
 	u) url=$OPTARG ;;
     esac
 done
